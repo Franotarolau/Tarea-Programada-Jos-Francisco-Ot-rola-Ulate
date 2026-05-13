@@ -232,8 +232,7 @@ def reporteHTML (ptokens):
     print(f"Reporte generado correctamente: {nombre_archivo}")
 
     
-def 
-   
+
     
     
 
@@ -267,6 +266,15 @@ def menu ():
 
         elif opcion == 3:
             tokens = agregarModificarToken(tokens)
+        elif opcion == 4:
+            guardarTokens(ptokens)
+        elif opcion == 5:
+            traducirCodigo
+        elif opcion==6:
+            reporteCSV
+        elif opcion == 7:
+            reporteHTML
+
         else:
             print("Opción inválida.\n")
 
