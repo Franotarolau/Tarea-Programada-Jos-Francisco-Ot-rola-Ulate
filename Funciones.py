@@ -1,4 +1,7 @@
-
+#Versión: 3.14.3
+#Elaborado por: José Francisco Otárola Ulate
+#Fecha de inicio:
+#Fecha de ultimo cambio: 
 def cargarArchivo(ptokens):
     nombreArchivo= input("Digite el nombre de su archivo: ").strip ()
     separador = input("Seleccione su separador('->', '=' o ','']'): ").strip ()
@@ -231,10 +234,35 @@ def reporteHTML (ptokens):
     
     print(f"Reporte generado correctamente: {nombre_archivo}")
 
-    
+import pickle 
+import datetime
+import os    
+def bitacoraRegistros(ptokens):    
 
-    
-    
+    if os.path.exists("bitacora.txt"):
+        with open ("bitacora.txt", "rb") as archivo:
+            return pickle.load(archivo)
+    else:
+        return []
+def guardarBitacora(bitacora):
+    with open ("bitacora.txt", "wb") as archivo:
+        pickle.dump (bitacora,archivo)
+
+def registrarEvento(bitacora,descripcion):
+    ahora = datetime.datetime.now()
+    fecha = ahora.strftime ("%Y-%m-%d_%H:%M:%S")
+    registro = (fecha, descripcion)
+    bitacora.append(registro)
+    guardarBitacora(bitacora)
+
+
+def buscarPalabraOFecha (bitacora,fechaBuscar,palabra):
+    for registro in bitacora:
+        if fechaBuscar in registro[0]:
+            print(registro)
+        for registro in bitacora:
+            if palabra.lower() in registro[1].lower():
+                print(registro)
 
 
 
@@ -274,6 +302,11 @@ def menu ():
             reporteCSV
         elif opcion == 7:
             reporteHTML
+        elif opcion == 8:
+            
+
+        elif opcion == 9:
+            break
 
         else:
             print("Opción inválida.\n")
