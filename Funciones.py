@@ -52,7 +52,7 @@ def agregarModificarToken(ptokens):
     cadenas = input("Ingrese la cadena con los tokens: ").strip()
 
     if cadenas.lower() == "cancelar":
-        confirmacion = input("Esta seguro que quiere cancelar? Digite Y para confirmar, N para volver")
+        confirmacion = input("Esta seguro que quiere cancelar? Digite Y para confirmar, N para volver: ")
         if confirmacion == 'Y':
             print ("Operación cancelada.\n") 
         else:
@@ -123,8 +123,102 @@ def agregarModificarToken(ptokens):
     print("Proceso terminado.\n")
     return ptokens
 
-          
+def guardarTokens(ptokens):
+    if not ptokens:
+        print ('No hay tokens para guardar. \n')
+        return
 
+    nombreArchivo = input ('Ingrese nombre del archivo a utilizar: ')
+    separador = input ('Ingrese el tipo de separador que desea utilizar: ')
+    if separador not in ["->", "=",  ","]:
+        print ("Separador inválido. Seleccione '='', '->'' o ','")
+        separador = input("Ingrese tipo de separador: ").strip()
+    try:
+        with open (nombreArchivo, "w") as archivo:
+             for clave, valor in ptokens:
+                linea = clave + separador + valor + "\n"
+                archivo.write(linea)
+        print ('Tokens guardados correctamente.\n')
+    except:
+        print("Ocurrió un error al guardar el archivo.\n")
+               
+def traducirCodigo (ptokens):
+   conteo = {}
+
+   for clave, _ in ptokens:
+       conteo [clave] = 0
+   
+   archivoInicial = input('Digite el nombre del archivo a traducir: ')
+   archivoSalida = input('Ingrese el nombre del nuevo archivo: ')
+   try:
+        with open(archivoInicial, 'r') as archivoLectura, \
+             open(archivoSalida, 'w') as archivoEscritura:
+                for linea in archivoLectura:
+
+                    palabraActual = ""
+                    nuevaLinea = ""
+
+                    for caracter in linea:
+                        if caracter.isalnum() or caracter == "_":
+                            palabraActual += caracter
+                        else:
+                            if palabraActual != "":
+                                traducida= palabraActual
+                                for clave, valor in ptokens:
+                                    if palabraActual == clave:
+                                        traducida = valor
+                                        conteo [clave]+= 1
+                                        break
+
+                                    nuevaLinea += traducida
+                                    palabraActual = ""
+                                    nuevaLinea += caracter
+
+                    if palabraActual != "":
+                        traducida = palabraActual
+                        for clave, valor in ptokens:
+                            if palabraActual == clave:
+                                traducida = valor
+                                conteo [clave] += 1
+                                break
+
+                        nuevaLinea += traducida
+                        archivoEscritura.write(nuevaLinea)
+                        print("Archivo traducido correctamente.\n")
+        return conteo
+
+   except FileNotFoundError:
+        print("Archivo no encontrado.\n")
+        return None 
+   
+
+
+def reporteCSV (ptokens, conteo):
+    if conteo is None:
+        print ("No hay datos para generar el reporte indicado. \n")
+
+
+    with open ('reporte.csv', "w") as archivo:
+        archivo.write ('pralabra original, Token de reemplazo, Cantidad \n')
+
+        for clave,valor in ptokens:
+            cantidad = conteo.get (clave,0)
+
+            if cantidad > 0:
+                linea = f"{clave},{ptokens}, {valor}."
+                archivo.write(linea)
+
+
+    
+    
+
+
+
+                              
+
+
+                    
+                
    
     
     
@@ -135,7 +229,6 @@ def menu ():
     tokens = []
 
     while True:
-        print ('='*20)
         print ('menu')
         print ('='*20)
         print ('\n 1: cargar archivo \n 2: Mostar tokens \n 3: Agregar/modificar token \n 4: Guardar tokens \n 5: Traducir código \n 6: Generar CSV \n 7: Generar HTML \n 8: Submenú de bitácora del sistema')
