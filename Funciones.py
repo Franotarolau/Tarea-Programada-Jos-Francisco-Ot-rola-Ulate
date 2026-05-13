@@ -23,7 +23,7 @@ def cargarArchivo(ptokens):
     except FileNotFoundError:
         print("Error: Archivo no encontrado.\n")
 
-    return tokens
+    return ptokens
 
 def actualizarToken(ptokens, pclave, pvalor):
     for i, (c, v) in enumerate(ptokens):
