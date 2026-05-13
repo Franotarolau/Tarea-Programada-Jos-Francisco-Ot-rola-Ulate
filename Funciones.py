@@ -209,6 +209,31 @@ def reporteCSV (ptokens, conteo):
                 archivo.write(linea)
 
 
+def reporteHTML (ptokens):
+    import datetime
+    reporteTitulo = input ('Ingrese el titulo que desea imporner en el reporte: ')
+    ahora=datetime.datetime.now
+    fechaConFormato = ahora.strftime("%d-%m-%y-%H-%M-%S")
+    nombreArchivo= f"reporteHTML_{fechaConFormato}.html"
+    with open (nombreArchivo, "w",encoding="utf-8") as archivo:
+          archivo.write(f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{reporteTitulo}</title>
+</head>
+<body>
+    <h1>{reporteTitulo}</h1>
+    <p>Fecha y hora de generación: {ahora.strftime("%d/%m/%y %H:%M:%S")}</p>
+</body>
+</html>
+""")
+    
+    print(f"Reporte generado correctamente: {nombre_archivo}")
+
+    
+def 
+   
     
     
 
