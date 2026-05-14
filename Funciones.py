@@ -215,7 +215,7 @@ def reporteCSV (ptokens, conteo):
 def reporteHTML (ptokens):
     import datetime
     reporteTitulo = input ('Ingrese el titulo que desea imporner en el reporte: ')
-    ahora=datetime.datetime.now
+    ahora=datetime.datetime.now()
     fechaConFormato = ahora.strftime("%d-%m-%y-%H-%M-%S")
     nombreArchivo= f"reporteHTML_{fechaConFormato}.html"
     with open (nombreArchivo, "w",encoding="utf-8") as archivo:
@@ -232,7 +232,7 @@ def reporteHTML (ptokens):
 </html>
 """)
     
-    print(f"Reporte generado correctamente: {nombre_archivo}")
+    print(f"Reporte generado correctamente: {nombreArchivo}")
 
 import pickle 
 import datetime
@@ -255,15 +255,31 @@ def registrarEvento(bitacora,descripcion):
     bitacora.append(registro)
     guardarBitacora(bitacora)
 
-
-def buscarPalabraOFecha (bitacora,fechaBuscar,palabra):
-    for registro in bitacora:
-        if fechaBuscar in registro[0]:
-            print(registro)
-        for registro in bitacora:
+def buscarPalabra (bitacora, palabra):
+     for registro in bitacora:
             if palabra.lower() in registro[1].lower():
                 print(registro)
 
+def buscarFecha(bitacora,fechaBuscar):
+    for registro in bitacora:
+        if fechaBuscar in registro[0]:
+            print(registro)
+       
+def submenu(bitacora):
+    while True:
+        print ("\n *** Submenú Bitácora ***")
+        print ('1 para acciones por día escogido \n 2 para ver las acciones con palabras claves \n 3 para salir del submenú')
+
+        opciones = input ("Seleccione alguna opción: ")
+        if opciones == "1":
+            fecha = input("Ingrese la fecha (YYYY-MM-DD): ")
+            buscarFecha(bitacora, fecha)
+        elif opciones == "2":
+         buscarPalabra
+        else:
+            return
+        
+   
 
 
                               
@@ -279,33 +295,48 @@ def buscarPalabraOFecha (bitacora,fechaBuscar,palabra):
 
 def menu ():
     tokens = []
+    bitacora = bitacoraRegistros(tokens)
 
     while True:
         print ('menu')
         print ('='*20)
         print ('\n 1: cargar archivo \n 2: Mostar tokens \n 3: Agregar/modificar token \n 4: Guardar tokens \n 5: Traducir código \n 6: Generar CSV \n 7: Generar HTML \n 8: Submenú de bitácora del sistema')
-        opcion= int(input('Seleccione una acción: '))
-        if opcion == 1:
+        opcion= input('Seleccione una acción: ')
+        if opcion == "1":
             tokens = cargarArchivo(tokens)
-            print ('se ha cargado el archivo correctamente.')\
-            
-        elif opcion == 2:
+            registrarEvento(bitacora, "Se cargaron tokens desde archivo")
+
+        elif opcion == "2":
             mostrarTokens(tokens)
+            registrarEvento(bitacora, "Se mostraron los tokens")
 
-        elif opcion == 3:
+        elif opcion == "3":
             tokens = agregarModificarToken(tokens)
-        elif opcion == 4:
-            guardarTokens(ptokens)
-        elif opcion == 5:
-            traducirCodigo
-        elif opcion==6:
-            reporteCSV
-        elif opcion == 7:
-            reporteHTML
-        elif opcion == 8:
-            
+            registrarEvento(bitacora, "Se agregaron/modificaron tokens")
 
-        elif opcion == 9:
+        elif opcion == "4":
+            guardarTokens(tokens)
+            registrarEvento(bitacora, "Se guardaron los tokens")
+
+        elif opcion == "5":
+            conteo = traducirCodigo(tokens)
+            registrarEvento(bitacora, "Se tradujo un archivo")
+
+        elif opcion == "6":
+            conteo = traducirCodigo(tokens)
+            reporteCSV(tokens, conteo)
+            registrarEvento(bitacora, "Se generó reporte CSV")
+
+        elif opcion == "7":
+            reporteHTML(tokens)
+            registrarEvento(bitacora, "Se generó reporte HTML")
+
+        elif opcion == "8":
+            submenu(bitacora)
+
+        elif opcion == "9":
+            registrarEvento(bitacora, "El usuario salió del programa")
+            print("Saliendo del sistema...")
             break
 
         else:
