@@ -1,0 +1,6 @@
+int -> entero
+str -> hilera
+int, entero
+str,hilera
+int=entero
+str=hilera
