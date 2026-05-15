@@ -1,5 +1,5 @@
 #Versión: 3.14.3
-#Elaborado por: José Francisco Otárola Ulate
+#Elaborado por: José Francisco Otárola Ulate y Ismael Torres
 #Fecha de inicio: 1/5/26 3:16 PM
 #Fecha de ultimo cambio: 13/5/26 11:20 PM
 def cargarArchivo(ptokens):
